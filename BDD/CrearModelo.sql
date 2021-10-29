@@ -99,15 +99,6 @@ CREATE TABLE Rol(
 ALTER TABLE Rol ADD CONSTRAINT rol_primaryK PRIMARY KEY (id_rol);
 
 
---Planilla
-CREATE TABLE Planilla(
-    id_planilla         NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
-    id_departamento     NUMBER
-);
-ALTER TABLE Planilla ADD CONSTRAINT planilla_primaryK PRIMARY KEY (id_planilla);
-ALTER TABLE Planilla ADD CONSTRAINT planilla_departamentoFk FOREIGN KEY (id_departamento) REFERENCES Departamento(id_departamento);
-
-
 --Usuario
 CREATE TABLE Usuario(
     id_usuario          NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
@@ -117,11 +108,11 @@ CREATE TABLE Usuario(
     fecha_fin           DATE,
     estado              VARCHAR(20),
     id_rol              NUMBER,
-    id_plantilla        NUMBER
+    id_departamento     NUMBER
 );
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_primaryK PRIMARY KEY (id_usuario);
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_rolFk FOREIGN KEY (id_rol) REFERENCES Rol(id_rol);
-ALTER TABLE Usuario ADD CONSTRAINT Usuario_plantillaFk FOREIGN KEY (id_plantilla) REFERENCES Planilla(id_planilla);
+ALTER TABLE Usuario ADD CONSTRAINT Usuario_departamentoFk FOREIGN KEY (id_departamento) REFERENCES DEPARTAMENTO(id_departamento);
 
 
 --calificacion_usuario_puesto
@@ -140,13 +131,12 @@ ALTER TABLE calificacion_usuario_puesto ADD CONSTRAINT calificacion_usuario_pues
 --revisor_expedientes
 CREATE TABLE revisor_expedientes(
     id_revisor_expedientes  NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
-    id_usuario              NUMBER,
-    id_departamento         NUMBER
+    cantidad_exp            NUMBER,
+    id_usuario              NUMBER
 );
 
 ALTER TABLE revisor_expedientes ADD CONSTRAINT revisor_expedientes_primaryK PRIMARY KEY (id_revisor_expedientes);
 ALTER TABLE revisor_expedientes ADD CONSTRAINT revisor_expedientes_usuarioFk FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
-ALTER TABLE revisor_expedientes ADD CONSTRAINT revisor_expedientes_departamentoFk FOREIGN KEY (id_departamento) REFERENCES Departamento(id_departamento);
 
 
 --Expediente
@@ -164,18 +154,20 @@ CREATE TABLE Expediente(
     fecha_post          DATE,
     id_puesto           NUMBER,
     id_rev_exp          NUMBER,
-    id_usuario          NUMBER
+    id_usuario          NUMBER,
+    id_departamento     NUMBER
 );
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_primaryK PRIMARY KEY (id_expediente);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_puestoFk FOREIGN KEY (id_puesto) REFERENCES Puesto(id_puesto);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_rev_expFk FOREIGN KEY (id_rev_exp) REFERENCES revisor_expedientes(id_revisor_expedientes);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_usuarioFk FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
+ALTER TABLE Expediente ADD CONSTRAINT Expediente_departamentoFk FOREIGN KEY (id_departamento) REFERENCES DEPARTAMENTO(id_departamento);
 
 
 --documento
 CREATE TABLE Documento(
     id_documento        NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
-    nombre_documento    VARCHAR(100),
+    nombre_documento    VARCHAR(200),
     aceptado            CHAR,
     motivo              VARCHAR(500),
     fecha               DATE,
@@ -186,12 +178,21 @@ ALTER TABLE Documento ADD CONSTRAINT Documento_primaryK PRIMARY KEY (id_document
 ALTER TABLE Documento ADD CONSTRAINT Documento_expedienteFk FOREIGN KEY (id_expediente) REFERENCES Expediente(id_expediente);
 
 
+insert into ROL (NOMBRE_ROL) values ('Admin');
+insert into ROL (NOMBRE_ROL) values ('Coordinador');
+insert into ROL (NOMBRE_ROL) values ('Revisor');
+insert into ROL (NOMBRE_ROL) values ('Aplicante');
+
+insert into USUARIO (USERNAME, PASSWORD, FECHA_INI, ESTADO, ID_ROL)
+values ('Admin', '1234', TO_DATE('03/11/2021', 'DD/MM/YYYY'), 1, 1);
+
+commit;
+
 drop table Documento;
 drop table Expediente;
 drop table revisor_expedientes;
 drop table calificacion_usuario_puesto;
 drop table Usuario;
-drop table Planilla;
 drop table Rol;
 drop table puesto_departamento;
 drop table Departamento;

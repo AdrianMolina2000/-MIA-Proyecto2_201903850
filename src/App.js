@@ -1,24 +1,37 @@
 import './App.css';
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 //Importar para container
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-
+import Login from './Components/Login';
+import Carrousel from './Components/Carrousel';
 import CargarDatos from './Components/CargarDatos';
+import Coordinador from './Components/Coordinador'
+import Revisor from './Components/Revisor'
+import PrivateRoute from './Routers/PrivateRoute';
+import AuthProvider from './Auth/AuthProvider';
 
+//8366440
 
 function App() {
   return (
 
-    <React.Fragment>
-      <CssBaseline />
-      <Container fixed>
-        <CargarDatos/>
-      </Container>
-    </React.Fragment>
+    <Container fixed>
+      <AuthProvider>
+        <Router>
+          <Switch>
+            <PrivateRoute exact path="/CargarDatos" component={CargarDatos} />
+            {/* <PrivateRoute exact path="/Revisor" component={Revisor} /> */}
+            <PrivateRoute exact path="/Coordinador" component={Coordinador} />
+            
+            <Route exact path="/Login" component={Login} />
+            <Route exact path="/" component={Carrousel} />
+          </Switch>
+        </Router>
+      </AuthProvider>
+
+    </Container>
   );
 }
 

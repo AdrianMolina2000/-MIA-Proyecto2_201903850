@@ -1,8 +1,11 @@
 import { TextField } from '@mui/material';
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
+
+import CrearUsers from './CrearUsers';
+
 
 class CargaDatos extends Component {
 
@@ -15,7 +18,7 @@ class CargaDatos extends Component {
 
 
     temporal = [];
-
+    temporal2 = [];
 
     readFile = (e) => {
         const file = e.target.files[0];
@@ -77,10 +80,9 @@ class CargaDatos extends Component {
                 for (let n3 = 0; n3 < dep.children[n2].children.length; n3++) {
                     let nombre_puesto;
                     let salario_puesto;
-                    let imagen_puesto;
+                    let imagen_puesto = "https://www.istockphoto.com/resources/images/PhotoFTLP/1154103408.jpg";
                     let requisitos;
                     let categorias
-
                     for (let n4 = 0; n4 < dep.children[n2].children[n3].children.length; n4++) {
                         if (dep.children[n2].children[n3].children[n4].name === "nombre") {
                             nombre_puesto = dep.children[n2].children[n3].children[n4].value;
@@ -109,7 +111,7 @@ class CargaDatos extends Component {
                                     } else if (requis[n5].children[n6].name === "formatos") {
                                         let formatoes = requis[n5].children[n6].getElementsByTagName('nombre');
                                         formato_req = [];
-                                        for(let n7 = 0; n7 < formatoes.length; n7++){
+                                        for (let n7 = 0; n7 < formatoes.length; n7++) {
                                             formato_req.push(formatoes[n7].value);
                                         }
                                     }
@@ -154,9 +156,8 @@ class CargaDatos extends Component {
 
     render() {
         return (
-            <div>
-                <br />
-                <br />
+            <div style={{ marginTop: "50px", color: "#494949" }}>
+                <h2 className="Title">Cargar Informacion del sistema</h2>
                 <Grid container spacing={2}>
                     <Grid item xs={8}>
                         <TextField
@@ -174,13 +175,18 @@ class CargaDatos extends Component {
 
 
                     <Grid item xs={2}>
-                        <form onSubmit={this.sendModelo}>
-                            <Button
-                                variant="outlined"
-                                type="submit"
-                                onClick={this.cargarD}
-                            >Cargar Datos</Button>
-                        </form>
+                        <label htmlFor="botonDatos">
+                            <Button variant="outlined" component="span">Cargar Datos</Button>
+                        </label>
+
+                        <input
+                            id="botonDatos"
+                            style={{ display: 'none' }}
+                            type="submit"
+                            onClick={this.cargarD}
+                        />
+
+
                     </Grid>
 
 
@@ -200,6 +206,8 @@ class CargaDatos extends Component {
                     </Grid>
 
                 </Grid>
+
+                <CrearUsers></CrearUsers>
             </div>
         )
     }

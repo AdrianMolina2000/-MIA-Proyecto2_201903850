@@ -36,3 +36,7 @@ async function prueba(req, res) {
 }
 
 module.exports = { puesto_requisito: prueba }
+
+
+
+
