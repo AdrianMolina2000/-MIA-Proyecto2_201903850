@@ -74,6 +74,8 @@ const Login = () => {
                     otra.push("/Coordinador");
                 }else if(response.data[0][2] === 3){
                     otra.push("/Revisor");
+                }else if(response.data[0][2] === 4){
+                    otra.push("/Aplicante");
                 }
             }
         });

@@ -17,6 +17,7 @@
     "css-loader": "^6.4.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
+    "nodemailer": "^6.7.0",
     "oracledb": "^5.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

@@ -2,9 +2,13 @@ const express=require('express')
 const fileUpload = require('express-fileupload');
 const util = require('util')
 const app=express();
-const oracle=require('oracledb')
+const oracle=require('oracledb');
 const cors = require('cors');
+const nodeMailer = require('nodemailer');
+
 const port=5670;
+
+
 const departamentos = require('./inserts/departamentos');
 const puestos = require('./inserts/puestos');
 const puesto_dep = require('./inserts/puesto_dep');
@@ -23,12 +27,15 @@ const DepartamentosCoor = require('./consultas/DepartamentosCoor');
 const DepartamentosRev = require('./consultas/DepartamentosRev');
 const usuarios_cons = require('./consultas/usuarios');
 const listaUsers = require('./consultas/listaUsers');
+const revisor = require('./consultas/Revisor');
 
 
 const update_user = require('./Update/update_usuario');
 
 
 const delete_user = require('./Update/deleteUser');
+const rechazar = require('./Update/Rechazar');
+const aceptar = require('./Update/Aceptar');
 
 
 app.use(cors());
@@ -37,10 +44,21 @@ app.use(express.json());
 cns={
     user:"BD1",
     password:"1234",
-    connectString:"34.125.45.107:1521/orcl18"
+    connectString:"34.125.232.237:1521/orcl18"
 }
 
 
+//NODE MAILER
+var transport = nodeMailer.createTransport({
+    service: 'gmail',
+    auth:{
+        user:'adriansmc2@gmail.com',
+        pass:'Adriansmc2224'
+
+    }
+})
+
+//CONSULTAS
 async function prueba(req, res) {
     await departamentos.dep(req, res);
     await puestos.puesto(req,res);
@@ -89,6 +107,46 @@ app.get('/listaUsers',(req,res)=>{
     listaUsers.lista_Users(req, res);
 })
 
+app.post('/Revisor',(req,res)=>{
+    revisor.Revisor(req, res);
+})
+
+app.post('/Rechazar',(req,res)=>{
+    rechazar.rechazar(req,res)
+})
+
+
+RandomPass = () => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let resultado = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 10; i++) {
+      resultado += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
+    }
+
+    return resultado;
+};
+
+app.post('/Aceptar',(req,res)=>{
+    var password = RandomPass()
+    aceptar.aceptar(req, res, password)
+
+    var mailOptions = {
+        from: 'adriansmc2@gmail.com',
+        to: 'adriansmc@gmail.com',
+        subject: 'Nuevo Aplicante',
+        text: `Haz sido aceptado para ser parte del departamento, Felicidades. \n`+
+        `Tus credenciales son: \nUsuario: ${req.body.dpi} \n${password}`
+    }
+
+    transport.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error)
+        }
+    })
+})
 
 
 //Documentos
@@ -111,6 +169,19 @@ app.post('/solicitud',(req,res)=>{
         }
     })
 
+    var soli = JSON.parse(req.body.datos)
+    var mailOptions = {
+        from: 'adriansmc2@gmail.com',
+        to: 'adriansmc@gmail.com',
+        subject: 'Nuevo Aplicante',
+        text: `${soli.nombre} ${soli.apellido} se ha postulado como nuevo aplicante`
+    }
+
+    transport.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error)
+        }
+    })
 })
 
 app.listen(port,()=>{

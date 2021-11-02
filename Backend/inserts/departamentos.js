@@ -2,7 +2,7 @@ const oracle = require('oracledb');
 const connect = {
     user: "BD1",
     password: "1234",
-    connectString: "34.125.45.107:1521/ORCL18"
+    connectString: "34.125.232.237:1521/ORCL18"
 };
 
 async function prueba(req, res) {

@@ -154,14 +154,12 @@ CREATE TABLE Expediente(
     fecha_post          DATE,
     id_puesto           NUMBER,
     id_rev_exp          NUMBER,
-    id_usuario          NUMBER,
-    id_departamento     NUMBER
+    id_usuario          NUMBER
 );
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_primaryK PRIMARY KEY (id_expediente);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_puestoFk FOREIGN KEY (id_puesto) REFERENCES Puesto(id_puesto);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_rev_expFk FOREIGN KEY (id_rev_exp) REFERENCES revisor_expedientes(id_revisor_expedientes);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_usuarioFk FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
-ALTER TABLE Expediente ADD CONSTRAINT Expediente_departamentoFk FOREIGN KEY (id_departamento) REFERENCES DEPARTAMENTO(id_departamento);
 
 
 --documento
