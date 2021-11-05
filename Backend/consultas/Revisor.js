@@ -1,9 +1,7 @@
 const oracle = require('oracledb');
-const connect = {
-    user: "BD1",
-    password: "1234",
-    connectString: "34.125.232.237:1521/ORCL18"
-};
+const connection = require('../connect') 
+const connect = connection.connect
+
 
 async function prueba(req,res){
     try{
@@ -18,7 +16,6 @@ async function prueba(req,res){
         "where E.REVISADO = 0 "+
         `and RE.ID_USUARIO = ${req.body.id_revisor} `)
 
-        // console.log(resultado.rows)
     }catch(err){
         return res.send(err.message)
     }

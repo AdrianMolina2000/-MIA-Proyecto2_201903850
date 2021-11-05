@@ -1,9 +1,6 @@
 const oracle = require('oracledb');
-const connect = {
-    user: "BD1",
-    password: "1234",
-    connectString: "34.125.232.237:1521/ORCL18"
-};
+const connection = require('../connect') 
+const connect = connection.connect
 
 async function prueba(req, res) {
 // function prueba(req, res) {

@@ -69,10 +69,36 @@ BEGIN
     select USUARIO.ID_USUARIO into usuarioN
     from USUARIO
     where USUARIO.USERNAME = U_DPI
-    and USUARIO.PASSWORD = U_DPI;
+    and USUARIO.PASSWORD = U_PASSWORD;
 
     update EXPEDIENTE
     set EXPEDIENTE.ID_USUARIO = usuarioN
     where EXPEDIENTE.ID_EXPEDIENTE = E_EXP;
 END AceptarExp;
 
+
+CREATE OR REPLACE PROCEDURE CargarReq(D_NOMBRE IN VARCHAR, D_FECHA IN VARCHAR,
+                                      D_LINK IN VARCHAR, D_EXP IN NUMBER)
+IS
+    cnt NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO cnt
+    FROM DOCUMENTO D
+    WHERE D.NOMBRE_DOCUMENTO = D_NOMBRE
+    and D.ID_EXPEDIENTE = D_EXP;
+
+    IF cnt = 0 THEN
+
+        insert into DOCUMENTO (NOMBRE_DOCUMENTO, ACEPTADO, FECHA, LINK_DESCARGA, ID_EXPEDIENTE)
+        values (D_NOMBRE, 2, TO_DATE(D_FECHA, 'DD/MM/YYYY'), D_LINK, D_EXP);
+
+    ELSE
+        update DOCUMENTO
+        set ACEPTADO = 2, FECHA = TO_DATE(D_FECHA, 'DD/MM/YYYY'), LINK_DESCARGA = D_LINK
+        where ID_DOCUMENTO = (
+            select ID_DOCUMENTO
+            from DOCUMENTO
+            where  NOMBRE_DOCUMENTO = D_NOMBRE
+            );
+    END IF;
+END CargarReq;

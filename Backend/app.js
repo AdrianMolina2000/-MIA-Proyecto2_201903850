@@ -20,6 +20,7 @@ const categoria = require('./inserts/categoria');
 const puesto_categoria = require('./inserts/puesto_categoria');
 const solicitud = require('./inserts/solicitud');
 const CoorRev = require('./inserts/CoorRev');
+const cargarReq = require('./inserts/CargarReq');
 
 
 const puestosC = require('./consultas/puestos');
@@ -28,6 +29,10 @@ const DepartamentosRev = require('./consultas/DepartamentosRev');
 const usuarios_cons = require('./consultas/usuarios');
 const listaUsers = require('./consultas/listaUsers');
 const revisor = require('./consultas/Revisor');
+const aplicante = require('./consultas/Aplicante');
+const requisitos = require('./consultas/Requisitos');
+const requAccept = require('./consultas/RequAccept');
+const requRev = require('./consultas/ReqRev');
 
 
 const update_user = require('./Update/update_usuario');
@@ -36,6 +41,7 @@ const update_user = require('./Update/update_usuario');
 const delete_user = require('./Update/deleteUser');
 const rechazar = require('./Update/Rechazar');
 const aceptar = require('./Update/Aceptar');
+const aceptarRechazar = require('./Update/AceptarRechazar');
 
 
 app.use(cors());
@@ -44,7 +50,7 @@ app.use(express.json());
 cns={
     user:"BD1",
     password:"1234",
-    connectString:"34.125.232.237:1521/orcl18"
+    connectString:"34.125.36.122:1521/orcl18"
 }
 
 
@@ -111,6 +117,10 @@ app.post('/Revisor',(req,res)=>{
     revisor.Revisor(req, res);
 })
 
+app.post('/Aplicante',(req,res)=>{
+    aplicante.Aplicante(req, res);
+})
+
 app.post('/Rechazar',(req,res)=>{
     rechazar.rechazar(req,res)
 })
@@ -135,7 +145,7 @@ app.post('/Aceptar',(req,res)=>{
 
     var mailOptions = {
         from: 'adriansmc2@gmail.com',
-        to: 'adriansmc@gmail.com',
+        to: req.body.email,
         subject: 'Nuevo Aplicante',
         text: `Haz sido aceptado para ser parte del departamento, Felicidades. \n`+
         `Tus credenciales son: \nUsuario: ${req.body.dpi} \n${password}`
@@ -148,6 +158,36 @@ app.post('/Aceptar',(req,res)=>{
     })
 })
 
+app.post('/Requisitos',(req,res)=>{
+    requisitos.Requisitos(req, res);
+})
+
+app.post('/RequAccept',(req,res)=>{
+    requAccept.requisitoAceptado(req, res);
+})
+
+app.post('/RequRev',(req,res)=>{
+    requRev.requisitoRevisar(req, res);
+})
+
+app.put('/AceptarRechazar',(req,res)=>{
+    aceptarRechazar.aceptarRechazar(req,res)
+
+    if(!req.body.accept){
+        var mailOptions = {
+            from: 'adriansmc2@gmail.com',
+            to: req.body.email,
+            subject: 'Documento Rechazado',
+            text: `El requisito ${req.body.nombre} ha sido rechazado por: ${req.body.razon} `
+        }
+    
+        transport.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error)
+            }
+        })
+    }
+})
 
 //Documentos
 app.use(fileUpload());
@@ -158,7 +198,6 @@ app.post('/solicitud',(req,res)=>{
     const filename = file.name;
 
     const datos = JSON.parse(req.body.datos);
-    console.log(filename)
 
     file.mv(`${path}${datos.DPI}-${filename}`, (err)=>{
         if(err){
@@ -183,6 +222,24 @@ app.post('/solicitud',(req,res)=>{
         }
     })
 })
+
+app.post('/CargarRequisito',(req,res)=>{
+    const path = "../public/Upload/";
+    const file = req.files.file;
+    const filename = file.name.split('.');
+    let extension = filename[1];
+    const datos = JSON.parse(req.body.datos);
+
+    file.mv(`${path}${datos.dpi}-${datos.nombre}.${extension}`, (err)=>{
+        if(err){
+            res.status(500).send({message:"Falla al subir el archivo", code:200})
+        }else{
+            res.status(500).send({message:"Archivo subido con exito", code:200})
+            cargarReq.CargarReq(req,res)
+        }
+    })
+})
+
 
 app.listen(port,()=>{
     console.log("Servidor en el puerto",port)
