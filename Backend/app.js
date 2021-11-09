@@ -33,6 +33,9 @@ const aplicante = require('./consultas/Aplicante');
 const requisitos = require('./consultas/Requisitos');
 const requAccept = require('./consultas/RequAccept');
 const requRev = require('./consultas/ReqRev');
+const expedientesAceptados = require('./consultas/ExpedientesAceptados');
+const capital = require('./consultas/capital');
+const plantilla = require('./consultas/plantilla');
 
 
 const update_user = require('./Update/update_usuario');
@@ -42,6 +45,8 @@ const delete_user = require('./Update/deleteUser');
 const rechazar = require('./Update/Rechazar');
 const aceptar = require('./Update/Aceptar');
 const aceptarRechazar = require('./Update/AceptarRechazar');
+const agregar_Plantilla = require('./Update/agregar_plantilla');
+const eliminar_Plantilla = require('./Update/eliminar_plantilla');
 
 
 app.use(cors());
@@ -123,6 +128,26 @@ app.post('/Aplicante',(req,res)=>{
 
 app.post('/Rechazar',(req,res)=>{
     rechazar.rechazar(req,res)
+})
+
+app.post('/expedientesAceptados', (req, res) => {
+    expedientesAceptados.expedientesAceptado(req, res);
+})
+
+app.post('/capital', (req, res) => {
+    capital.capital(req, res);
+})
+
+app.post('/agregarPlantilla', (req, res) => {
+    agregar_Plantilla.agregar(req, res);
+})
+
+app.post('/eliminarPlantilla', (req, res) => {
+    eliminar_Plantilla.eliminar(req, res);
+})
+
+app.post('/plantilla', (req, res) => {
+    plantilla.plantilla(req, res);
 })
 
 

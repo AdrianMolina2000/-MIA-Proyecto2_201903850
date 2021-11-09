@@ -7,7 +7,7 @@ async function prueba(req,res){
     try{
         conexion=await oracle.getConnection(connect)
         resultado=await conexion.execute(
-        "select D.ID_DOCUMENTO, D.NOMBRE_DOCUMENTO, D.LINK_DESCARGA, E.EMAIL "+
+        "select D.ID_DOCUMENTO, D.NOMBRE_DOCUMENTO, D.LINK_DESCARGA, E.EMAIL, D.ID_EXPEDIENTE "+
         "from DOCUMENTO D "+
         "inner join EXPEDIENTE E on E.ID_EXPEDIENTE = D.ID_EXPEDIENTE "+
         `inner join REVISOR_EXPEDIENTES RE on RE.ID_REVISOR_EXPEDIENTES = E.ID_REV_EXP `+

@@ -9,6 +9,9 @@ import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import TextField from '@mui/material/TextField';
+import { DataGrid } from '@material-ui/data-grid';
+import Rating from '@mui/material/Rating';
+
 
 import './Carrousel.css';
 
@@ -108,8 +111,8 @@ function Banner(props) {
                                     <Grid item xs={6}>
                                         <TextField
                                             label="CUI/DPI" type="number" variant="outlined"
-                                            onInput = {(e) =>{
-                                                e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,13)
+                                            onInput={(e) => {
+                                                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
                                             }}
                                             onChange={(e) => setDatos({ ...datos, DPI: e.target.value })}
                                             value={datos.DPI}
@@ -209,13 +212,13 @@ function Banner(props) {
 
 let items = []
 let x = true;
-
+let rows = [];
 class Carrousel extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            autoPlay: false,
+            autoPlay: true,
             animation: "slide",
             indicators: true,
             timeout: 500,
@@ -234,15 +237,18 @@ class Carrousel extends React.Component {
             const data = await response.data;
             for (let i = 0; i < data.length; i++) {
                 this.state.temporal.push({
+                    id: i,
                     id_puesto: data[i][0],
                     Name: data[i][1],
                     Caption: data[i][2],
                     Item_image: data[i][3],
                     Item_Name: data[i][4],
-                    id_departamento: data[i][5]
+                    id_departamento: data[i][5],
+                    nombre_dep: data[i][6]
                 })
             }
             items = this.state.temporal;
+            rows = this.state.temporal;
             x = false;
             this.forceUpdate();
 
@@ -311,10 +317,51 @@ class Carrousel extends React.Component {
                         </Box>
                     )
                 }
+                <div style={{ marginTop: "50px", marginBottom: "50px", color: "#494949" }}>
+                    <h2 className="Title">Puestos</h2>
+                    <Rating/>
+                    <div style={{ height: 400, width: '100%', backgroundColor: 'white', borderStyle: 'solid' }}>
+                        <DataGrid
+                            rows={rows}
+                            columns={columns}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            checkboxSelection
+                            disableSelectionOnClick
+                        />
+                    </div>
+                </div>
             </div>
 
         )
     }
 }
+
+const columns = [
+    {
+        field: 'Name',
+        headerName: 'Puesto',
+        width: 240,
+        editable: false,
+    },
+    {
+        field: 'Caption',
+        headerName: 'Salario',
+        width: 140,
+        editable: false,
+    },
+    {
+        field: 'Item_Name',
+        headerName: 'Categorias',
+        width: 250,
+        editable: false,
+    },
+    {
+        field: 'nombre_dep',
+        headerName: 'Departamento',
+        width: 220,
+        editable: false,
+    }
+];
 
 export default Carrousel;

@@ -20,7 +20,7 @@ const AuthProvider = ({children}) => {
     const contextValue = {
         user,
         login(param){
-            setUser({id:param.id, nickname: param.user})
+            setUser({id:param.id, nickname: param.user, departamento: param.dep})
         },
         logout(){
             setUser(null); 

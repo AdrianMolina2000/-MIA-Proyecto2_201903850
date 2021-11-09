@@ -8,12 +8,13 @@ async function prueba(req,res){
         conexion=await oracle.getConnection(connect)
         resultado=await conexion.execute('select PUESTO.ID_PUESTO, NOMBRE_PUESTO, SALARIO, LINK_IMAGEN, '+
         'LISTAGG(C2.NOMBRE_CATEGORIA, \', \') within group ( order by C2.NOMBRE_CATEGORIA) as Categorias, '+
-        'PD.ID_DEPARTAMENTO '+
+        'PD.ID_DEPARTAMENTO, D.NOMBRE_DEPARTAMENTO '+
         'from PUESTO '+
         'INNER JOIN PUESTO_CATEGORIA PC on PUESTO.ID_PUESTO = PC.ID_PUESTO '+
         'INNER JOIN CATEGORIA C2 on PC.ID_CATEGORIA = C2.ID_CATEGORIA '+
         'INNER JOIN PUESTO_DEPARTAMENTO PD on PUESTO.ID_PUESTO = PD.ID_PUESTO '+
-        'group by PUESTO.ID_PUESTO, NOMBRE_PUESTO, SALARIO, LINK_IMAGEN, PD.ID_DEPARTAMENTO ')
+        'INNER JOIN DEPARTAMENTO D on PD.ID_DEPARTAMENTO = D.ID_DEPARTAMENTO '+
+        'group by PUESTO.ID_PUESTO, NOMBRE_PUESTO, SALARIO, LINK_IMAGEN, PD.ID_DEPARTAMENTO, D.NOMBRE_DEPARTAMENTO ')
 
         // console.log(resultado.rows)
     }catch(err){

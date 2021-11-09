@@ -79,6 +79,7 @@ export default class CrearUsers extends React.Component {
             email_doc: '',
             nombre_doc: '',
             razon: '',
+            exp_doc: ''
         };
     }
 
@@ -130,7 +131,8 @@ export default class CrearUsers extends React.Component {
                         id_doc: data[i][0],
                         requisito: data[i][1],
                         link: data[i][2],
-                        email: data[i][3]
+                        email: data[i][3],
+                        id_exp: data[i][4]
                     })
                 }
             } else {
@@ -165,6 +167,7 @@ export default class CrearUsers extends React.Component {
             this.state.link = param.link
             this.state.email_doc = param.email
             this.state.nombre_doc = param.requisito
+            this.state.exp_doc = param.id_exp
             this.forceUpdate();
         }
     }
@@ -185,23 +188,23 @@ export default class CrearUsers extends React.Component {
     }
 
     Aceptar2 = (e) => {
-        axios.put('http://localhost:5670/AceptarRechazar', { id_doc: this.state.id_doc, accept: 1 })
+        axios.put('http://localhost:5670/AceptarRechazar', { id_doc: this.state.id_doc, accept: 1, id_exp: this.state.exp_doc})
         window.location.reload();
     }
 
     Rechazar2 = (e) => {
         axios.put('http://localhost:5670/AceptarRechazar', {id_doc: this.state.id_doc, 
-                                                            accept: 0, email: this.state.email_doc, 
+                                                            accept: 0, 
+                                                            email: this.state.email_doc, 
                                                             nombre: this.state.nombre_doc,
-                                                            razon: this.state.razon})
+                                                            razon: this.state.razon,
+                                                            id_exp: this.state.exp_doc})
         window.location.reload();
     }
 
     render() {
         return (
             <div>
-
-
                 <div style={{ marginTop: "50px", marginBottom: "50px", color: "#494949" }}>
                     <h2 className="Title">Expedientes</h2>
                     <div style={{ height: 400, width: '100%', backgroundColor: 'white', borderStyle: 'solid' }}>

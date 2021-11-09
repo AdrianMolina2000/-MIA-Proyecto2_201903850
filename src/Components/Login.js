@@ -67,7 +67,7 @@ const Login = () => {
                 setLoginStatus("Usuario o Contraseña Incorrectos")
             }else{
                 setLoginStatus("");
-                auth.login({id:response.data[0][0], user:response.data[0][1]});
+                auth.login({id:response.data[0][0], user:response.data[0][1], dep:response.data[0][3]});
                 if(response.data[0][2] === 1){
                     otra.push("/CargarDatos");
                 }else if(response.data[0][2] === 2){

@@ -152,6 +152,7 @@ CREATE TABLE Expediente(
     revisado            CHAR,
     corregir            CHAR,
     fecha_post          DATE,
+    id_departamento     NUMBER,
     id_puesto           NUMBER,
     id_rev_exp          NUMBER,
     id_usuario          NUMBER

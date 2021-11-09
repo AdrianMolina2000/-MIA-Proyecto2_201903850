@@ -8,7 +8,7 @@ async function prueba(req, res, password) {
         soli = req.body;
         conexion = await oracle.getConnection(connect)
         resultado = await conexion.execute(
-            `CALL AceptarExp(${soli.id}, ${soli.id_rev_exp}, '${soli.dpi}', '${password}' ,'${soli.fecha}', ${soli.dep}`+
+            `CALL AceptarExp(${soli.id}, ${soli.id_rev_exp}, '${soli.dpi}', '${password}' ,'${soli.fecha}'`+
             `)`, [], { autoCommit: true });
     } catch (err) {
         console.log(err.message);

@@ -6,10 +6,15 @@ const connect = connection.connect
 async function prueba(req,res){
     try{
         conexion=await oracle.getConnection(connect)
-        resultado=await conexion.execute('select ID_USUARIO, USERNAME, ID_ROL, ID_DEPARTAMENTO '+
-        'from USUARIO '+
-        `where USUARIO.USERNAME =  '${req.body.nickname}' `+
-        `and USUARIO.PASSWORD = '${req.body.password}' `)
+        resultado=await conexion.execute(
+        "select E.ID_USUARIO, E.DPI, E.NOMBRES, E.APELLIDOS, P.NOMBRE_PUESTO, P.SALARIO "+
+        "from EXPEDIENTE E "+
+        "inner join USUARIO U on U.ID_USUARIO = E.ID_USUARIO "+
+        "inner join PUESTO P on P.ID_PUESTO = E.ID_PUESTO "+
+        "where U.ID_ROL = 4 "+
+        "and U.ESTADO = 1 "+
+        `and U.ID_DEPARTAMENTO = ${req.body.id_dep} `
+        )
 
         // console.log(resultado.rows)
     }catch(err){
@@ -25,11 +30,11 @@ async function prueba(req,res){
         }
     }
     if(resultado.rows.length==0){
-        return res.send("Nickname or password incorrect")
+        return res.send("No hay revisor")
     }else{
         return res.send(resultado.rows)
     }
 }
 
 
-module.exports = { usuarios_cons: prueba }
+module.exports = { plantilla: prueba }

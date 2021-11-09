@@ -2,13 +2,14 @@ const oracle = require('oracledb');
 const connection = require('../connect') 
 const connect = connection.connect
 
-async function prueba(req, res) {
+async function prueba(req, res, password) {
 
     try {
+        soli = req.body;
         conexion = await oracle.getConnection(connect)
         resultado = await conexion.execute(
-            `CALL CorregirExp(${req.body.id_doc}, ${req.body.accept}, ${req.body.id_exp}) `
-            , [], { autoCommit: true });
+            `CALL plantilla(${soli.id_dep}, ${soli.id_user}, ${soli.salario} `+
+            `)`, [], { autoCommit: true });
     } catch (err) {
         console.log(err.message);
     }
@@ -23,4 +24,4 @@ async function prueba(req, res) {
     }
 }
 
-module.exports = { aceptarRechazar: prueba }
+module.exports = { agregar: prueba }

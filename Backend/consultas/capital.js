@@ -6,10 +6,9 @@ const connect = connection.connect
 async function prueba(req,res){
     try{
         conexion=await oracle.getConnection(connect)
-        resultado=await conexion.execute('select ID_USUARIO, USERNAME, ID_ROL, ID_DEPARTAMENTO '+
-        'from USUARIO '+
-        `where USUARIO.USERNAME =  '${req.body.nickname}' `+
-        `and USUARIO.PASSWORD = '${req.body.password}' `)
+        resultado=await conexion.execute('select CAPITAL_DEPARTAMENTO '+
+        'from DEPARTAMENTO '+
+        `where ID_DEPARTAMENTO = ${req.body.dep} `)
 
         // console.log(resultado.rows)
     }catch(err){
@@ -25,11 +24,11 @@ async function prueba(req,res){
         }
     }
     if(resultado.rows.length==0){
-        return res.send("Nickname or password incorrect")
+        return res.send("Sin datos")
     }else{
         return res.send(resultado.rows)
     }
 }
 
 
-module.exports = { usuarios_cons: prueba }
+module.exports = { capital: prueba }
