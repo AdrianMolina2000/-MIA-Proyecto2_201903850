@@ -5,6 +5,7 @@ const connect = connection.connect
 
 async function prueba(req,res){
     try{
+        console.log(req.body)
         conexion=await oracle.getConnection(connect)
         resultado=await conexion.execute(
         "select R.NOMBRE_REQUISITO, PR.TAMANIO_REQUISITO, PR.OBLIGATORIO, "+
@@ -17,9 +18,8 @@ async function prueba(req,res){
         "select * from( "+
         "select D.NOMBRE_DOCUMENTO "+
         "FROM DOCUMENTO D "+
-        "inner join EXPEDIENTE E on D.ID_EXPEDIENTE = E.ID_EXPEDIENTE "+
-        `where E.ID_EXPEDIENTE = ${req.body.id_exp} `+
-        `and D.ACEPTADO = 1 or D.ACEPTADO = 2`+
+        `where D.ID_EXPEDIENTE = ${req.body.id_exp} `+
+        `and (D.ACEPTADO = 2 or D.ACEPTADO = 1) `+
         `)docs `+
         `inner join REQUISITO R on R.ID_REQUISITO = PR.ID_REQUISITO `+
         `where R.NOMBRE_REQUISITO = docs.NOMBRE_DOCUMENTO `+
@@ -27,7 +27,7 @@ async function prueba(req,res){
         `and PR.ID_PUESTO = ${req.body.id_puesto}`+
         `group by PR.ID_REQUISITO, R.NOMBRE_REQUISITO, PR.TAMANIO_REQUISITO, PR.OBLIGATORIO `)
 
-        // console.log(resultado.rows)
+        console.log(resultado.rows)
     }catch(err){
         return res.send(err.message)
     }

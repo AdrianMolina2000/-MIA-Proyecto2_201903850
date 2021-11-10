@@ -20,9 +20,9 @@ BEGIN
     ;
 
     insert into EXPEDIENTE (DPI, NOMBRES, APELLIDOS, EMAIL, DIRECCION, TELEFONO, CV, REVISADO, CORREGIR,
-                        FECHA_POST, ID_DEPARTAMENTO,ID_PUESTO, ID_REV_EXP)
+                        FECHA_POST, ID_DEPARTAMENTO,ID_PUESTO, ID_REV_EXP, RECHAZADOS)
     values (P_DPI, P_NOMBRES, P_APELLIDOS, P_EMAIL, P_DIRECCION, P_TELEFONO, P_CV, 0, 2,
-            TO_DATE(P_FECHA, 'DD/MM/YYYY'), P_ID_DEPARTAMENTO,P_ID_PUESTO, revisor);
+            TO_DATE(P_FECHA, 'DD/MM/YYYY'), P_ID_DEPARTAMENTO,P_ID_PUESTO, revisor, 0);
 
     update REVISOR_EXPEDIENTES
     set CANTIDAD_EXP = CANTIDAD_EXP + 1
@@ -99,6 +99,7 @@ BEGIN
             select ID_DOCUMENTO
             from DOCUMENTO
             where  NOMBRE_DOCUMENTO = D_NOMBRE
+            and ID_EXPEDIENTE = D_EXP
             );
     END IF;
 END CargarReq;
@@ -122,6 +123,13 @@ BEGIN
     set ACEPTADO = D_ACCEPT
     where ID_DOCUMENTO = D_ID_DOC;
 
+    if D_ACCEPT = 0 THEN
+        update EXPEDIENTE
+        set RECHAZADOS = RECHAZADOS + 1
+        where ID_EXPEDIENTE = D_EXP;
+    end if;
+
+
     SELECT COUNT(*) INTO cnt2
     FROM DOCUMENTO
     WHERE ID_EXPEDIENTE = D_EXP
@@ -132,8 +140,8 @@ BEGIN
         update EXPEDIENTE
         set CORREGIR = 0
         where ID_EXPEDIENTE = D_EXP;
-    end if
-    ;
+    end if;
+
 END CorregirExp;
 
 

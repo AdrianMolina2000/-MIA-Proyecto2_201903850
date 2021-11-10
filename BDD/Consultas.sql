@@ -86,9 +86,9 @@ WHERE not Exists(
     select * from(
                     select D.NOMBRE_DOCUMENTO
                     FROM DOCUMENTO D
-                    inner join EXPEDIENTE E on D.ID_EXPEDIENTE = E.ID_EXPEDIENTE
-                    where E.ID_EXPEDIENTE = 1
-                    and D.ACEPTADO = 2 or D.ACEPTADO = 1
+                    where D.ID_EXPEDIENTE = 43
+                    and (D.ACEPTADO = 2 or D.ACEPTADO = 1)
+
     )docs
 inner join REQUISITO R on R.ID_REQUISITO = PR.ID_REQUISITO
 where R.NOMBRE_REQUISITO = docs.NOMBRE_DOCUMENTO
@@ -156,7 +156,6 @@ select * from REVISOR_EXPEDIENTES;
 select * from EXPEDIENTE;
 select * from DOCUMENTO;
 select * from DEPARTAMENTO;
-
 
 
 commit;

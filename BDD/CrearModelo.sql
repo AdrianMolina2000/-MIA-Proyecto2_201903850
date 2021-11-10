@@ -155,7 +155,8 @@ CREATE TABLE Expediente(
     id_departamento     NUMBER,
     id_puesto           NUMBER,
     id_rev_exp          NUMBER,
-    id_usuario          NUMBER
+    id_usuario          NUMBER,
+    rechazados          NUMBER
 );
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_primaryK PRIMARY KEY (id_expediente);
 ALTER TABLE Expediente ADD CONSTRAINT Expediente_puestoFk FOREIGN KEY (id_puesto) REFERENCES Puesto(id_puesto);
