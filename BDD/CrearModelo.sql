@@ -8,7 +8,7 @@ ALTER TABLE Formato ADD CONSTRAINT Formato_primaryK PRIMARY KEY (id_formato);
 --Requisito
 CREATE TABLE Requisito(
     id_requisito         NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
-    nombre_requisito     VARCHAR(100)
+    nombre_requisito     VARCHAR(200)
 );
 ALTER TABLE Requisito ADD CONSTRAINT Requisito_primaryK PRIMARY KEY (id_requisito);
 
@@ -28,9 +28,9 @@ ALTER TABLE formato_requisito ADD CONSTRAINT formato_requisito_formatoFk   FOREI
 --Puesto
 CREATE TABLE Puesto(
     id_puesto       NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
-    nombre_puesto   VARCHAR(100),
+    nombre_puesto   VARCHAR(200),
     salario         NUMBER,
-    link_imagen     VARCHAR(100)
+    link_imagen     VARCHAR(200)
 );
 ALTER TABLE Puesto ADD CONSTRAINT puesto_primaryK PRIMARY KEY (id_puesto);
 
@@ -52,7 +52,7 @@ ALTER TABLE puesto_requisito ADD CONSTRAINT puesto_requisito_requisitoFk FOREIGN
 --Categoria
 CREATE TABLE Categoria(
     id_categoria         NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
-    nombre_categoria     VARCHAR(10)
+    nombre_categoria     VARCHAR(100)
 );
 ALTER TABLE Categoria ADD CONSTRAINT Categoria_primaryK PRIMARY KEY (id_categoria);
 
@@ -72,9 +72,9 @@ ALTER TABLE puesto_categoria ADD CONSTRAINT puesto_categoria_categoriaFk FOREIGN
 --Departamento
 CREATE TABLE Departamento(
     id_departamento         NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
-    nombre_departamento     VARCHAR(100),
+    nombre_departamento     VARCHAR(200),
     capital_departamento    NUMBER,
-    departamento_padre      VARCHAR(100)
+    departamento_padre      VARCHAR(200)
 );
 ALTER TABLE Departamento ADD CONSTRAINT departamento_primaryK PRIMARY KEY (id_departamento);
 
@@ -102,8 +102,8 @@ ALTER TABLE Rol ADD CONSTRAINT rol_primaryK PRIMARY KEY (id_rol);
 --Usuario
 CREATE TABLE Usuario(
     id_usuario          NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
-    username            VARCHAR(100),
-    password            VARCHAR(100),
+    username            VARCHAR(200),
+    password            VARCHAR(200),
     fecha_ini           DATE,
     fecha_fin           DATE,
     estado              VARCHAR(20),
@@ -132,7 +132,8 @@ ALTER TABLE calificacion_usuario_puesto ADD CONSTRAINT calificacion_usuario_pues
 CREATE TABLE revisor_expedientes(
     id_revisor_expedientes  NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
     cantidad_exp            NUMBER,
-    id_usuario              NUMBER
+    id_usuario              NUMBER,
+    total                   NUMBER
 );
 
 ALTER TABLE revisor_expedientes ADD CONSTRAINT revisor_expedientes_primaryK PRIMARY KEY (id_revisor_expedientes);
@@ -143,8 +144,8 @@ ALTER TABLE revisor_expedientes ADD CONSTRAINT revisor_expedientes_usuarioFk FOR
 CREATE TABLE Expediente(
     id_expediente       NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,
     DPI                 NUMBER,
-    nombres             VARCHAR(100),
-    apellidos           VARCHAR(100),
+    nombres             VARCHAR(200),
+    apellidos           VARCHAR(200),
     email               VARCHAR(200),
     direccion           VARCHAR(200),
     telefono            NUMBER,

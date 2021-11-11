@@ -10,6 +10,7 @@ import CargarDatos from './Components/CargarDatos';
 import Coordinador from './Components/Coordinador'
 import Revisor from './Components/Revisor'
 import Aplicante from './Components/Aplicante'
+import Reportes from './Components/Reportes'
 import PrivateRoute from './Routers/PrivateRoute';
 import AuthProvider from './Auth/AuthProvider';
 
@@ -27,6 +28,7 @@ function App() {
             <PrivateRoute exact path="/Coordinador" component={Coordinador} />
             <PrivateRoute exact path="/Aplicante" component={Aplicante} />
             <Route exact path="/Login" component={Login} />
+            <Route exact path="/Reportes" component={Reportes} />
             <Route exact path="/" component={Carrousel} />
           </Switch>
         </Router>

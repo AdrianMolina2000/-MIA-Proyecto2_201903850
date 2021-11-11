@@ -25,7 +25,8 @@ BEGIN
             TO_DATE(P_FECHA, 'DD/MM/YYYY'), P_ID_DEPARTAMENTO,P_ID_PUESTO, revisor, 0);
 
     update REVISOR_EXPEDIENTES
-    set CANTIDAD_EXP = CANTIDAD_EXP + 1
+    set CANTIDAD_EXP = CANTIDAD_EXP + 1,
+        TOTAL = TOTAL + 1
     where ID_REVISOR_EXPEDIENTES = revisor;
 
 END RelacionarRevisor;

@@ -254,8 +254,8 @@ AFTER INSERT
 BEGIN
     if :NEW.ID_ROL = 3 THEN
 
-        insert into REVISOR_EXPEDIENTES (CANTIDAD_EXP, ID_USUARIO)
-        values (0, :NEW.ID_USUARIO);
+        insert into REVISOR_EXPEDIENTES (CANTIDAD_EXP, ID_USUARIO, TOTAL)
+        values (0, :NEW.ID_USUARIO, 0);
     end if;
 END CrearRevisorExp;
 

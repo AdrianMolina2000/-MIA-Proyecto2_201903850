@@ -37,6 +37,12 @@ const expedientesAceptados = require('./consultas/ExpedientesAceptados');
 const capital = require('./consultas/capital');
 const plantilla = require('./consultas/plantilla');
 
+const reporte1 = require('./consultas/reporte1');
+const reporte2 = require('./consultas/reporte2');
+const reporte3 = require('./consultas/reporte3');
+const reporte4 = require('./consultas/reporte4');
+const reporte5 = require('./consultas/reporte5');
+
 
 const update_user = require('./Update/update_usuario');
 
@@ -213,6 +219,30 @@ app.put('/AceptarRechazar',(req,res)=>{
         })
     }
 })
+
+
+//REPORTES
+
+app.get('/reporte1',(req,res)=>{
+    reporte1.reporte1(req,res)
+})
+
+app.get('/reporte2',(req,res)=>{
+    reporte2.reporte2(req,res)
+})
+
+app.get('/reporte3',(req,res)=>{
+    reporte3.reporte3(req,res)
+})
+
+app.get('/reporte4',(req,res)=>{
+    reporte4.reporte4(req,res)
+})
+
+app.get('/reporte5',(req,res)=>{
+    reporte5.reporte5(req,res)
+})
+
 
 //Documentos
 app.use(fileUpload());
